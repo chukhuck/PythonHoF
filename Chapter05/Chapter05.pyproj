@@ -4,13 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>6a43b7f3-8b96-49f5-82f0-1458ea2de9ee</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Chapter05.py</StartupFile>
+    <StartupFile>webapp\vsearch4web.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>Chapter05</Name>
     <RootNamespace>Chapter05</RootNamespace>
+    <InterpreterId>Global|PythonCore|3.7-32</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,7 +22,32 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Chapter05.py" />
+    <Compile Include="webapp\vsearch.py" />
+    <Compile Include="webapp\vsearch4web.py">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="webapp\" />
+    <Folder Include="webapp\static\" />
+    <Folder Include="webapp\templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.7-32" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="webapp\static\hf.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="webapp\templates\base.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="webapp\templates\entry.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="webapp\templates\results.html">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

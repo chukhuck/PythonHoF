@@ -11,7 +11,8 @@
     <OutputPath>.</OutputPath>
     <Name>Chapter04</Name>
     <RootNamespace>Chapter04</RootNamespace>
-    <InterpreterId>MSBuild|env|O:\Repos\LearnPython\Chapter01\Chapter01.pyproj</InterpreterId>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,9 +24,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ch04_01.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="MSBuild|env|O:\Repos\LearnPython\Chapter01\Chapter01.pyproj" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
