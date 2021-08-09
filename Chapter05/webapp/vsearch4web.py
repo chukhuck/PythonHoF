@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, escape
 from vsearch import search4letters
 from flask import render_template
 from utils import log_request
@@ -25,7 +25,7 @@ def entry_page() -> 'html':
 def view_the_log() -> str:
     with open('vsearch.log') as log
         contents = log.read()
-    return contents
+    return escape(contents)
 
 
 if __name__ == '__main__': 
