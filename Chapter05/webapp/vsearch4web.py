@@ -22,14 +22,19 @@ def entry_page() -> 'html':
     return render_template('entry.html', the_title='vsearch. web version')
 
 @app.route('/viewlog')
-def view_the_log() -> str:
+def view_the_log() -> 'html':
     contents = []
     with open('vsearch.log') as log
         for line in log:
             contents.append([])
             for item in line.split('|'):
                 contents[-1].append(escape(item))
-    return str(contents)
+    titles = ('Form Data', 'IP', 'User agent', 'Result')
+
+    return render_template('log.html',
+                            the_title='View Log',
+                            the_row_titles=titles,
+                            the_data=contents,)
 
 
 if __name__ == '__main__': 
