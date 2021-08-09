@@ -21,6 +21,12 @@ def do_seach() -> 'html':
 def entry_page() -> 'html':
     return render_template('entry.html', the_title='vsearch. web version')
 
+@app.route('/viewlog')
+def view_the_log() -> str:
+    with open('vsearch.log') as log
+        contents = log.read()
+    return contents
+
 
 if __name__ == '__main__': 
  app.run(debug=True)
