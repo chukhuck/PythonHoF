@@ -2,9 +2,15 @@ from flask import Flask, request, escape
 from vsearch import search4letters
 from flask import render_template
 from utils import log_request
+from DBcm import UseDatabase
 
 
 app = Flask(__name__)
+
+app.config['dbconfig'] = {'host':'127.0.0.1', 
+                'user':'vsearch',
+                'password':'vsearchpasswd', 
+                'database': 'vsearchlogDB',}
 
 
 @app.route('/search4', methods=['POST'])
