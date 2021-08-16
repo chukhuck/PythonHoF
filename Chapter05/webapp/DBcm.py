@@ -1,6 +1,4 @@
 import mysql.connector
-from mysql.connector import cursor
-from mysql.connector.cursor_cext import CMySQLCursor
 
 class UseDatabase:
     def __init__(self, config: dict) -> None:
