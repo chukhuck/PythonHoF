@@ -1,7 +1,6 @@
 from flask import Flask, request, escape
 from vsearch import search4letters
 from flask import render_template
-from utils import log_request
 from DBcm import UseDatabase
 
 
@@ -29,13 +28,17 @@ def entry_page() -> 'html':
 
 @app.route('/viewlog')
 def view_the_log() -> 'html':
-    contents = []
-    with open('vsearch.log') as log:
-        for line in log:
-            contents.append([])
-            for item in line.split('|'):
-                contents[-1].append(escape(item))
-    titles = ('Form Data', 'IP', 'User agent', 'Result')
+    #contents = []
+
+    with UseDatabase(app.config['dbconfig']) as cursor:
+        _SQL = """select 
+                phrase, letters, ip, browserstring, results
+                from log"""
+
+        cursor.execute(_SQL)
+        contents = cursor.fetchall()
+
+    titles = ('Phrase', 'Letters', 'IP', 'User agent', 'Result')
 
     return render_template('log.html',
                             the_title='View Log',
