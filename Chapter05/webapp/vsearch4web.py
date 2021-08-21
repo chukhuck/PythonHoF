@@ -1,7 +1,7 @@
 from flask import Flask, request, escape, session
 from vsearch import search4letters
 from flask import render_template
-from DBcm import UseDatabase
+from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_log_in
 
 
@@ -21,7 +21,10 @@ def do_seach() -> 'html':
     phrase = request.form['phrase']
     letters = request.form['letters']
     results = str(search4letters(phrase, letters))
-    log_request(request, results)
+    try:
+        log_request(request, results)
+    except Exception as err:
+        return print('Something went wrong: ', err)
     return render_template('results.html', the_title = title, the_results = results, the_phrase=phrase, the_letters = letters,)
 
 @app.route('/')
@@ -32,21 +35,31 @@ def entry_page() -> 'html':
 @app.route('/viewlog')
 @check_log_in
 def view_the_log() -> 'html':
+    try:
+        with UseDatabase(app.config['dbconfig']) as cursor:
+            _SQL = """select 
+                    phrase, letters, ip, browserstring, results
+                    from log"""
 
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """select 
-                phrase, letters, ip, browserstring, results
-                from log"""
+            cursor.execute(_SQL)
+            contents = cursor.fetchall()
 
-        cursor.execute(_SQL)
-        contents = cursor.fetchall()
+        titles = ('Phrase', 'Letters', 'IP', 'User agent', 'Result')
 
-    titles = ('Phrase', 'Letters', 'IP', 'User agent', 'Result')
+        return render_template('log.html',
+                                the_title='View Log',
+                                the_row_titles=titles,
+                                the_data=contents,)
 
-    return render_template('log.html',
-                            the_title='View Log',
-                            the_row_titles=titles,
-                            the_data=contents,)
+    except ConnectionError as err:
+        print('Is your DB switched on? Error: ', str(err))
+    except CredentialsError as err:
+        print('User name/password is failed. Error: ', str(err))
+    except SQLError as err:
+        print('Is your query correct? Error:', str(err))
+    except Exception as err:
+        print('Something went wrong: ', str(err))
+    return 'Error'
 
 def log_request(req: 'flask_request', res: str) -> None:
     """Log web-request and return the results."""
