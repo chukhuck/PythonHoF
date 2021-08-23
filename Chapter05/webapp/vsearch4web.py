@@ -33,7 +33,7 @@ def do_seach() -> 'html':
                                  req.remote_addr,
                                  req.user_agent.browser,
                                  res,))
-                                 
+
         except ConnectionError as err:
             print('Is your DB switched on? Error: ', str(err))
         except CredentialsError as err:
@@ -50,7 +50,6 @@ def do_seach() -> 'html':
     try:
         t = Thread(target=log_request, args=(request, results))
         t.start()
-        log_request(request, results)
     except Exception as err:
         return print('Something went wrong: ', err)
     return render_template('results.html', the_title = title, the_results = results, the_phrase=phrase, the_letters = letters,)
