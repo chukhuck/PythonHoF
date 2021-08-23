@@ -1,8 +1,9 @@
-from flask import Flask, request, escape, session
+from flask import Flask, request, escape, session, copy_current_request_context
 from vsearch import search4letters
 from flask import render_template
 from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_log_in
+from threading import Thread
 
 
 app = Flask(__name__)
@@ -17,11 +18,28 @@ app.config['dbconfig'] = {'host':'127.0.0.1',
 
 @app.route('/search4', methods=['POST'])
 def do_seach() -> 'html':
+    @copy_current_request_context
+    def log_request(req: 'flask_request', res: str) -> None:
+        """Log web-request and return the results."""
+
+        with UseDatabase(app.config['dbconfig']) as cursor:
+            _SQL = """insert into log 
+                        (phrase, letters, ip, browserstring, results) 
+                        values (%s,%s,%s,%s,%s)"""
+
+            cursor.execute(_SQL, (req.form['phrase'],
+                             req.form['letters'],
+                             req.remote_addr,
+                             req.user_agent.browser,
+                             res,))
+                             
     title = 'Ваши результаты:'
     phrase = request.form['phrase']
     letters = request.form['letters']
     results = str(search4letters(phrase, letters))
     try:
+        t = Thread(target=log_request, args=(request, results))
+        t.start()
         log_request(request, results)
     except Exception as err:
         return print('Something went wrong: ', err)
@@ -60,20 +78,6 @@ def view_the_log() -> 'html':
     except Exception as err:
         print('Something went wrong: ', str(err))
     return 'Error'
-
-def log_request(req: 'flask_request', res: str) -> None:
-    """Log web-request and return the results."""
-
-    with UseDatabase(app.config['dbconfig']) as cursor:
-        _SQL = """insert into log 
-                    (phrase, letters, ip, browserstring, results) 
-                    values (%s,%s,%s,%s,%s)"""
-
-        cursor.execute(_SQL, (req.form['phrase'],
-                         req.form['letters'],
-                         req.remote_addr,
-                         req.user_agent.browser,
-                         res,))
 
 @app.route('/login')
 def do_login() -> str:
