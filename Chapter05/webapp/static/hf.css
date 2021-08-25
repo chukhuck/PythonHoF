@@ -1,1 +1,36 @@
+* {background-color: cornsilk; font-size: large;}
 
+h2 {align-content: center; text-align: center;}
+
+table {
+    align-content: center;
+    border-collapse: collapse; 
+    border: 1px solid goldenrod; 
+    background-color: green;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);}
+form {
+    width: 300px;
+    margin: auto;
+    padding-top: 200px;
+}
+
+td{
+    padding: 10px;
+}
+
+input {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    border-width: 0px;
+    background-color: white;
+}
+
+.info {
+    padding-top: 250px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

@@ -1,19 +1,29 @@
-{% extends 'base.html' %}
-{% block body %}
-<h2>{{ the_title }}</h2>
+<!doctype html>
+<html>
 
-<table>
-  <tr>
-        {% for row_title in the_row_titles %}
-            <th>{{ row_title }}</th>
-        {% endfor %}
-  </tr>
-        {% for log_row in the_data%}
-            <tr>
-                {% for item in log_row%}
-                    <td>{{ item }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-</table>
-{% endblock %}
+<head>
+  <title>{{the_title}}</title>
+  <link rel="stylesheet" type="text/css" href="../static/hacker.css">
+</head>
+<body>
+    {% block body %}
+    <h2>{{ the_title }}</h2>
+    
+    <table>
+      <tr>
+            {% for row_title in the_row_titles %}
+                <th>{{ row_title }}</th>
+            {% endfor %}
+      </tr>
+            {% for log_row in the_data%}
+                <tr>
+                    {% for item in log_row%}
+                        <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+    </table>
+    {% endblock %}
+</body>
+</html>
+
